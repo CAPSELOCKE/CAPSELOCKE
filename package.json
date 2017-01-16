@@ -1,0 +1,22 @@
+{
+  "name": "capselocke",
+  "version": "0.0.1",
+  "description": "Tweeting John Capse Locke 140 characters at a time @CAPSELOCKE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CAPSELOCKE/CAPSELOCKE.git"
+  },
+  "keywords": [
+    "twitterbot"
+  ],
+  "author": "Jonathan Lister <jnthnlstr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CAPSELOCKE/CAPSELOCKE/issues"
+  },
+  "homepage": "https://github.com/CAPSELOCKE/CAPSELOCKE#readme"
+}
