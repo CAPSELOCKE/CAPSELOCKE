@@ -1,3 +1,10 @@
+/*
+  Chop up a body of text into tweets
+  see README.md for usage information
+*/
+
+'use strict';
+
 var fs = require('fs');
 var path = require('path');
 
@@ -52,7 +59,7 @@ function finaliseTweet() {
 
 // create an empty folder for the tweets
 // or empty the existing folder
-if (fs.existsSync(TWEETS_DIR_PATH)){
+if (fs.existsSync(TWEETS_DIR_PATH)) {
   fs.readdirSync(TWEETS_DIR_PATH).forEach(function(f) {
     if (f.match('.json')) {
       fs.unlinkSync(path.join(TWEETS_DIR_PATH, f));
