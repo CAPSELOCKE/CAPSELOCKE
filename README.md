@@ -4,7 +4,7 @@ Tweeting the works of John Capse Locke 140 characters at time @CAPSELOCKE
 
 ## Usage
 
-1. Chop up a body of text into tweets
+1. `chopper.js` - chop up a body of text into tweets
 
 Running the following will chop up a body of text into 140 character chunks. Paragraph breaks will end a tweet.
 The tweets will be saved into a folder called `tweets` in the same directory as the script. A list of the tweets
@@ -23,3 +23,7 @@ Each tweet will be saved as a JSON file containing the body of the tweet and a l
       "body": "THE EPISTLE to the READER.",
       "next": "/1.json"
     }
+
+2. `index.js` - tweet from a queue and line up the next tweet
+
+This script is designed to be run on webtask.io as it uses local storage on that platform.

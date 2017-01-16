@@ -20,3 +20,6 @@
     * outputting a list of tweets for inspection
     * handled running multiple times and clearing the tweets folder
 * updated the README with chopper instructions
+* wrote the tweeting code
+  * opened the webtask in the online editor and set up the cron using that
+  * webtask.io API uses callbacks not Promises, so chose a (mainly) callback structure
