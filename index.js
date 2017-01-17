@@ -3,7 +3,7 @@
   See README.md for usage information
 */
 
-//'use strict';
+'use strict';
 
 var request = require('request-promise');
 
