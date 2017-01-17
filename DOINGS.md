@@ -29,5 +29,9 @@
   * uses Webtask API to edit the storage
 * testing scripts
   * noted Webtask is not doing a great job keeping the code in the editor up-to-date with the Github content
-  * seems to be working (although logging successful next tweet is not - TODO)
-  * next: tweet the tweet
+  * seems to be working (although logging successful next tweet is not)
+    * fixed after processing JSON properly
+* next: tweet the tweet
+  * Twitter is pretty long-winded to get API credentials, testing with private account first
+  * using Webtask secrets to store Twitter credentials
+  * and that works!

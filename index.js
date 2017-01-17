@@ -6,6 +6,7 @@
 'use strict';
 
 var request = require('request-promise');
+var Twit = require('twit');
 
 // tweet the queued tweet and then queue up the next one
 module.exports = function(ctx, cb) {
@@ -55,7 +56,22 @@ module.exports = function(ctx, cb) {
 
   // tweet the tweet
   function tweetIt(tweet) {
-    return Promise.resolve();
+    // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+    var client = new Twit({
+      consumer_key: ctx.secrets.TWITTER_CONSUMER_KEY,
+      consumer_secret: ctx.secrets.TWITTER_CONSUMER_SECRET,
+      access_token: ctx.secrets.TWITTER_ACCESS_TOKEN_KEY,
+      access_token_secret: ctx.secrets.TWITTER_ACCESS_TOKEN_SECRET
+    });
+    return new Promise(function(resolve, reject) {
+      client.post('statuses/update', {status: tweet.body}, function(error, tweet, response) {
+        if (error) {
+          return reject(error);
+        } else {
+          return resolve(tweet);
+        }
+      });
+    });
   }
 
   function queueUpNextTweet(tweet) {
