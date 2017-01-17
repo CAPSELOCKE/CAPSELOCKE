@@ -55,7 +55,7 @@ module.exports = function(ctx, cb) {
     return Promise.resolve();
   }
 
-  function queueUpNextTweet(tweet, callback) {
+  function queueUpNextTweet(tweet) {
     // get the next tweet by its URL
     var nextTweetURL = tweet.next;
     return request(nextTweetURL)
