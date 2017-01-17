@@ -23,3 +23,6 @@
 * wrote the tweeting code
   * opened the webtask in the online editor and set up the cron using that
   * webtask.io API uses callbacks not Promises, so chose a (mainly) callback structure
+* wrote a script to seed the webtask storage with the first tweet
+  * this wasn't planned out
+  * uses Webtask API to edit the storage

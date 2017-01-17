@@ -10,7 +10,7 @@ Running the following will chop up a body of text into 140 character chunks. Par
 The tweets will be saved into a folder called `tweets` in the same directory as the script. A list of the tweets
 will be written to a file called `tweets.txt` in the same directory.
 
-    chopper.js /path/to/file.txt [TWEET_URL_PREFIX]
+    node chopper.js /path/to/file.txt [TWEET_URL_PREFIX]
     
 Where:
 
@@ -24,6 +24,20 @@ Each tweet will be saved as a JSON file containing the body of the tweet and a l
       "next": "/1.json"
     }
 
-2. `index.js` - tweet from a queue and line up the next tweet
+2. `init.js` - seed the Webtask storage with the first tweet
+
+The script expects a seed tweet at `./tweets/0.json`.
+
+The script requires some environment variables to be set:
+
+* `WEBTASK_API_TOKEN` - valid Webtask authentication
+* `WEBTASK_USERNAME` - the slug of your Webtask account e.g. `wt-your-email-0`
+* `WEBTASK_NAME` - the name of the webtask you are setting storage for
+
+Run using:
+
+  node init.js
+
+3. `index.js` - tweet from a queue and line up the next tweet
 
 This script is designed to be run on webtask.io as it uses local storage on that platform.

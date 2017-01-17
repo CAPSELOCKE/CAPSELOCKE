@@ -1,6 +1,6 @@
 /*
   Send the next tweet in a queue and queue up the following one
-  see README.md for usage information
+  See README.md for usage information
 */
 
 'use strict';

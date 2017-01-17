@@ -1,6 +1,6 @@
 /*
   Chop up a body of text into tweets
-  see README.md for usage information
+  See README.md for usage information
 */
 
 'use strict';
