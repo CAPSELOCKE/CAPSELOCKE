@@ -30,6 +30,7 @@ module.exports = function(ctx, cb) {
     if (!tweet) {
       return callback(new Error('no tweet queued up'));
     }
+    console.log('Tweet retrieved from storage', tweet);
     // check if this tweet has already been tweeted
     if (tweet.tweeted) {
       // if it's already been tweeted, move on
@@ -41,6 +42,7 @@ module.exports = function(ctx, cb) {
         // save tweeted status to storage
         tweet.tweeted = true;
         ctx.storage.set(tweet, function() {
+          console.log('Tweet queued in storage', tweet);
           return queueUpNextTweet(tweet);
         });
       })
