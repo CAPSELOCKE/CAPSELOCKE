@@ -3,7 +3,7 @@
   See README.md for usage information
 */
 
-'use strict';
+//'use strict';
 
 var request = require('request-promise');
 
@@ -17,7 +17,7 @@ module.exports = function(ctx, cb) {
       return cb(err);
     } else {
       if (nextTweet) {
-        return cb(null, 'DONE - next tweet: ' + nextTweet.body);
+        return cb(null, 'DONE - next tweet: ' + JSON.stringify(nextTweet));
       } else {
         return cb(null, 'DONE - no next tweet');
       }
@@ -42,7 +42,7 @@ module.exports = function(ctx, cb) {
         // save tweeted status to storage
         tweet.tweeted = true;
         ctx.storage.set(tweet, function() {
-          console.log('Tweet queued in storage', tweet);
+          console.log('Tweet marked as tweeted in storage', tweet);
           return queueUpNextTweet(tweet);
         });
       })
@@ -53,6 +53,7 @@ module.exports = function(ctx, cb) {
     }
   });
 
+  // tweet the tweet
   function tweetIt(tweet) {
     return Promise.resolve();
   }
@@ -60,9 +61,13 @@ module.exports = function(ctx, cb) {
   function queueUpNextTweet(tweet) {
     // get the next tweet by its URL
     var nextTweetURL = tweet.next;
-    return request(nextTweetURL)
+    return request({
+      url: nextTweetURL,
+      json: true
+    })
     .then(function(nextTweet) {
       ctx.storage.set(nextTweet, function() {
+        console.log('Tweet queued up in storage', nextTweet);
         return callback(null, nextTweet);
       });
     })
