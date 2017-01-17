@@ -41,3 +41,10 @@ Run using:
 3. `index.js` - tweet from a queue and line up the next tweet
 
 This script is designed to be run on webtask.io as it uses local storage on that platform.
+
+To send out the tweets, you need to set up secret credentials on Webtask, as follows:
+
+* `TWITTER_CONSUMER_KEY` - API key
+* `TWITTER_CONSUMER_SECRET` - API secret
+* `TWITTER_ACCESS_TOKEN_KEY` - Access token
+* `TWITTER_ACCESS_TOKEN_SECRET` - Access token secret

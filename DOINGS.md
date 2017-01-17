@@ -35,3 +35,4 @@
   * Twitter is pretty long-winded to get API credentials, testing with private account first
   * using Webtask secrets to store Twitter credentials
   * and that works!
+* next: fix the word boundary stuff and use the whole body of text, then release on the @CAPSELOCKE account
