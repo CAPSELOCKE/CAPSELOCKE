@@ -14,6 +14,7 @@
     * deal with line-breaks by not allowing singles (blockquotes etc.) - TODO
     * ensure that headings are read separately? - TODO
     * clean whitespace - `\r\t` - leaving `\n`
+  * don't split words - TODO
 * wrote the `chopper.js` code
   * realise that my planned logic isn't quite right:
     * decide to write out the files at the end
@@ -28,3 +29,5 @@
   * uses Webtask API to edit the storage
 * testing scripts
   * noted Webtask is not doing a great job keeping the code in the editor up-to-date with the Github content
+  * seems to be working (although logging successful next tweet is not - TODO)
+  * next: tweet the tweet
