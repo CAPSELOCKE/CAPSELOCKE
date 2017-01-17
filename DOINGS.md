@@ -26,3 +26,5 @@
 * wrote a script to seed the webtask storage with the first tweet
   * this wasn't planned out
   * uses Webtask API to edit the storage
+* testing scripts
+  * noted Webtask is not doing a great job keeping the code in the editor up-to-date with the Github content
