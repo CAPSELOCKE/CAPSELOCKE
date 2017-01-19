@@ -8,11 +8,21 @@
 var fs = require('fs');
 var path = require('path');
 
+// get the source file from the arguments
+var sourceFilePath = process.argv[2];
+console.log('Source file:', sourceFilePath);
+
 // get the 'next tweet' URL prefix from the arguments
-var nextTweetPrefix = process.argv[2] || '';
+var nextTweetPrefix = process.argv[3] || '';
+console.log('Next tweet prefix:', nextTweetPrefix);
 
 // get the source text file
-var txt = fs.readFileSync('./source.txt', 'utf-8');
+try {
+  var txt = fs.readFileSync(sourceFilePath, 'utf-8');
+} catch (ex) {
+  console.log('failed to open source file');
+  return 1;
+}
 
 // clean whitespace, leave line-breaks
 txt = txt.replace(/\r|\t/g, '');
@@ -23,29 +33,30 @@ txt = txt.toUpperCase(); // because CAPSE LOCKE
 
 var TWEETS_DIR_PATH = path.join(__dirname, 'tweets');
 var tweets = [];
+var tweet;
 
 while (txt.length > 0) {
   // Prepare next tweet
-  var tweet = txt.substr(0, 140);
+  tweet = txt.substr(0, 140);
 
   // Track back to end of last word
-  if (tweet.lastIndexOf(" ") !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(" "));  
+  if (tweet.lastIndexOf(' ') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(' '));
   }
 
   // Trim back to last sentence end
-  if (tweet.lastIndexOf(".") !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(".") + 1);
+  if (tweet.lastIndexOf('.') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('.') + 1);
   }
 
   // Trim back to last colon
-  if (tweet.lastIndexOf(":") !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(":") + 1);
+  if (tweet.lastIndexOf(':') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
   }
 
   // Trim back to last semi-colon
-  if (tweet.lastIndexOf(";") !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(";") + 1);
+  if (tweet.lastIndexOf(';') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
   }
 
   tweets.push(tweet);

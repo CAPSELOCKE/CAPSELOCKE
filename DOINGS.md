@@ -37,3 +37,6 @@
   * and that works!
   * testing on a reduced schedule - every 5 minutes
 * next: fix the word boundary stuff and use the whole body of text, then release on the @CAPSELOCKE account
+  * csugden created a fork for this
+  * some discussion about whether to keep line-breaks or not
+  * fixing the ability to specify a source filename
