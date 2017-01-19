@@ -17,6 +17,8 @@ var txt = fs.readFileSync('./source.txt', 'utf-8');
 // clean whitespace, leave line-breaks
 txt = txt.replace(/\r|\t/g, '');
 
+txt = txt.replace(/\n/g,' '); // remove blank lines
+
 txt = txt.toUpperCase(); // because CAPSE LOCKE
 
 var TWEETS_DIR_PATH = path.join(__dirname, 'tweets');
