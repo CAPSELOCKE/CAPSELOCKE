@@ -40,3 +40,5 @@
   * csugden created a fork for this
   * some discussion about whether to keep line-breaks or not
   * fixing the ability to specify a source filename
+* running over an extract from the main body of text, including a header and some section symbols, found some issues
+  * headings and sections can both start in the middle of tweets
