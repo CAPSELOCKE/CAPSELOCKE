@@ -14,7 +14,7 @@
     * deal with line-breaks by not allowing singles (blockquotes etc.) - TODO
     * ensure that headings are read separately? - TODO
     * clean whitespace - `\r\t` - leaving `\n`
-  * don't split words - TODO
+  * don't split words - (DONE in #2)
 * wrote the `chopper.js` code
   * realise that my planned logic isn't quite right:
     * decide to write out the files at the end
