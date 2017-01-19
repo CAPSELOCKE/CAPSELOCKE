@@ -14,7 +14,7 @@
     * deal with line-breaks by not allowing singles (blockquotes etc.) - TODO
     * ensure that headings are read separately? - TODO
     * clean whitespace - `\r\t` - leaving `\n`
-  * don't split words - TODO
+  * don't split words - (DONE in #2)
 * wrote the `chopper.js` code
   * realise that my planned logic isn't quite right:
     * decide to write out the files at the end
@@ -37,3 +37,8 @@
   * and that works!
   * testing on a reduced schedule - every 5 minutes
 * next: fix the word boundary stuff and use the whole body of text, then release on the @CAPSELOCKE account
+  * csugden created a fork for this
+  * some discussion about whether to keep line-breaks or not
+  * fixing the ability to specify a source filename
+* running over an extract from the main body of text, including a header and some section symbols, found some issues
+  * headings and sections can both start in the middle of tweets
