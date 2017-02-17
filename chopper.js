@@ -39,14 +39,33 @@ while (txt.length > 0) {
   // Prepare next tweet
   tweet = txt.substr(0, 140);
 
+  // End tweet before any new paragraph (§)
+  if (tweet.indexOf('§') > 0) {
+    tweet = tweet.substr(0, tweet.indexOf('§'));
+    console.log(tweet.length);
+  }
+
   // Track back to end of last word
   if (tweet.lastIndexOf(' ') !== -1) {
     tweet = tweet.substr(0, tweet.lastIndexOf(' '));
   }
 
   // Trim back to last sentence end
-  if (tweet.lastIndexOf('.') !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf('.') + 1);
+  var indexOfLastFullstop = tweet.lastIndexOf('.');
+  if (indexOfLastFullstop !== -1) {
+
+    // Do not do this for section headings e.g. "§ 25."
+    var thisIsASectionHeading;
+    var indexOfLastParagraphSymbol = tweet.lastIndexOf('§');
+    if (indexOfLastParagraphSymbol !== -1) {
+      var possibleSectionHeading = tweet.substr(indexOfLastParagraphSymbol, indexOfLastFullstop + 1);
+      console.log(possibleSectionHeading);
+      thisIsASectionHeading = /§ ([0-9]+)\.$/.test(possibleSectionHeading);
+    }
+
+    if (!thisIsASectionHeading) {
+      tweet = tweet.substr(0, tweet.lastIndexOf('.') + 1);
+    }
   }
 
   // Trim back to last colon
