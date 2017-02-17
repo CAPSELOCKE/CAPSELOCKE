@@ -65,7 +65,7 @@ while (txt.length > 0) {
   if (indexOfLastFullstop !== -1) {
     var proposedNewTweet = tweet.substr(0, indexOfLastFullstop + 1);
 
-    // Do not do this if it would mean ending with a section heading
+    // Only trim back if it doesn't mean ending with a section heading
     if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
       tweet = proposedNewTweet;
     }
@@ -75,7 +75,7 @@ while (txt.length > 0) {
   if (tweet.lastIndexOf(':') !== -1) {
     var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
 
-    // Do not do this it it would mean ending with a chapter heading
+    // Only trim back if it doesn't mean ending with a chapter heading
     if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
       tweet = proposedNewTweet;
     }
