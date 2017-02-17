@@ -35,42 +35,50 @@ var TWEETS_DIR_PATH = path.join(__dirname, 'tweets');
 var tweets = [];
 var tweet;
 
+var chapterPattern = 'CHAP\. [IVXLCDM]+\.:';  // e.g. "CHAP. IV.:"
+var chapterRegExp = new RegExp(chapterPattern);
+var chapterAtEndRegExp = new RegExp(chapterPattern + '$');
+
+var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
+var sectionRegExp = new RegExp(sectionPattern);
+var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
+
 while (txt.length > 0) {
   // Prepare next tweet
   tweet = txt.substr(0, 140);
 
-  // End tweet before any new paragraph (§)
-  if (tweet.indexOf('§') > 0) {
-    tweet = tweet.substr(0, tweet.indexOf('§'));
-    console.log(tweet.length);
+  // End tweet before any new paragraph
+  if (tweet.search(sectionRegExp) > 0) {
+    tweet = tweet.substr(0, tweet.search(sectionRegExp));
   }
 
-  // Track back to end of last word
-  if (tweet.lastIndexOf(' ') !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(' '));
+  // End tweet before any new chapter
+  if (tweet.search(chapterRegExp) > 0) {
+    tweet = tweet.substr(0, tweet.search(chapterRegExp));
   }
+
+  // Remove whitespace from end
+  tweet = tweet.trim();
 
   // Trim back to last sentence end
   var indexOfLastFullstop = tweet.lastIndexOf('.');
   if (indexOfLastFullstop !== -1) {
+    var proposedNewTweet = tweet.substr(0, indexOfLastFullstop + 1);
 
-    // Do not do this for section headings e.g. "§ 25."
-    var thisIsASectionHeading;
-    var indexOfLastParagraphSymbol = tweet.lastIndexOf('§');
-    if (indexOfLastParagraphSymbol !== -1) {
-      var possibleSectionHeading = tweet.substr(indexOfLastParagraphSymbol, indexOfLastFullstop + 1);
-      console.log(possibleSectionHeading);
-      thisIsASectionHeading = /§ ([0-9]+)\.$/.test(possibleSectionHeading);
-    }
-
-    if (!thisIsASectionHeading) {
-      tweet = tweet.substr(0, tweet.lastIndexOf('.') + 1);
+    // Do not do this if it would mean ending with a section heading
+    if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
+      tweet = proposedNewTweet;
     }
   }
 
   // Trim back to last colon
   if (tweet.lastIndexOf(':') !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
+    var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
+
+    // Do not do this it it would mean ending with a chapter heading
+    if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
+      tweet = proposedNewTweet;
+    }
   }
 
   // Trim back to last semi-colon
