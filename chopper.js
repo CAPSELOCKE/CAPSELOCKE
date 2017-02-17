@@ -47,6 +47,9 @@ while (txt.length > 0) {
   // Prepare next tweet
   tweet = txt.substr(0, 140);
 
+  // Remove whitespace from end
+  tweet = tweet.trim();
+
   // End tweet before any new paragraph
   if (tweet.search(sectionRegExp) > 0) {
     tweet = tweet.substr(0, tweet.search(sectionRegExp));
@@ -56,9 +59,6 @@ while (txt.length > 0) {
   if (tweet.search(chapterRegExp) > 0) {
     tweet = tweet.substr(0, tweet.search(chapterRegExp));
   }
-
-  // Remove whitespace from end
-  tweet = tweet.trim();
 
   // Trim back to last sentence end
   var indexOfLastFullstop = tweet.lastIndexOf('.');
