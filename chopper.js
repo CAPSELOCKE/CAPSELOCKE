@@ -59,6 +59,11 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
   }
 
+  // Trim back to last comma if tweet does not end in full-stop, colon or semi-colon.
+  if (['.',':',';'].indexOf(tweet.slice(-1)) === -1 && tweet.lastIndexOf(',') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
+  }
+
   tweets.push(tweet);
 
   // Prepare remaining text
