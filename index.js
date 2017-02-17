@@ -89,6 +89,7 @@ module.exports = function(ctx, cb) {
     })
     .catch(function(err) {
       // if request fails, error out
+      console.log('Error queueing next tweet', nextTweetURL);
       return callback(err);
     });
   }
