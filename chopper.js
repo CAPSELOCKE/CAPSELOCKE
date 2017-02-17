@@ -50,7 +50,7 @@ while (txt.length > 0) {
   // Remove whitespace from end
   tweet = tweet.trim();
 
-  // End tweet before any new paragraph
+  // End tweet before any new section
   if (tweet.search(sectionRegExp) > 0) {
     tweet = tweet.substr(0, tweet.search(sectionRegExp));
   }
