@@ -14,7 +14,8 @@ will be written to a file called `tweets.txt` in the same directory.
     
 Where:
 
-* `/path/to/file.txt` is the path to the file to chop up
+* `/path/to/file.txt` is the path to the file or folder of files to chop up
+  * if the path is to a folder, the files will come out in the order they are returned from the file system
 * `TWEET_URL_PREFIX` is the prefix to put on the front of the link to the next tweet. For CAPSELOCKE, this is `https://raw.githubusercontent.com/CAPSELOCKE/CAPSELOCKE/master/tweets`
 
 Each tweet will be saved as a JSON file containing the body of the tweet and a link to the next tweet:
