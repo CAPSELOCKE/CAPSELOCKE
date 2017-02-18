@@ -6,6 +6,7 @@
 'use strict';
 
 var request = require('request-promise');
+var sendGrid = require('sendgrid@4.7.0');
 var Twit = require('twit');
 
 // tweet the queued tweet and then queue up the next one
@@ -26,7 +27,7 @@ module.exports = function(ctx, cb) {
       // split up the comma-separated list of to-emails
       var toEmails = ctx.secrets.ERROR_NOTIFICATIONS_TO.split(',');
       // send email through SendGrid
-      var helper = require('sendgrid').mail;
+      var helper = sendGrid.mail;
       var fromEmail = new helper.Email(ctx.secrets.ERROR_NOTIFICATIONS_FROM);
       var toEmail = new helper.Email(toEmails[0]);
       var subject = 'Error report from CAPSELOCKE';
@@ -34,10 +35,10 @@ module.exports = function(ctx, cb) {
       var mail = new helper.Mail(fromEmail, subject, toEmail, content);
       if (toEmails.length > 1) {
         toEmails.slice(1).forEach(function(email) {
-          mail.personalizations[0].addTo(email);
+          mail.personalizations[0].addTo(new helper.Email(email));
         });
       }
-      var sg = require('sendgrid')(ctx.secrets.SENDGRID_API_KEY);
+      var sg = sendGrid(ctx.secrets.SENDGRID_API_KEY);
       var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',
@@ -52,7 +53,8 @@ module.exports = function(ctx, cb) {
         return resolve(err);
       })
       .catch(function(emailError) {
-        console.log('error sending email notification', emailError);
+        console.log('error sending email notification',
+          JSON.stringify(emailError, null, 2));
         return resolve(err);
       });
     });
