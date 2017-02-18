@@ -43,9 +43,14 @@ Run using:
 
 This script is designed to be run on webtask.io as it uses local storage on that platform.
 
+Error reporting is handled by SendGrid if you set the relevant environment variables - see below.
+
 To send out the tweets, you need to set up secret credentials on Webtask, as follows:
 
 * `TWITTER_CONSUMER_KEY` - API key
 * `TWITTER_CONSUMER_SECRET` - API secret
 * `TWITTER_ACCESS_TOKEN_KEY` - Access token
 * `TWITTER_ACCESS_TOKEN_SECRET` - Access token secret
+* `SENDGRID_API_KEY` - SendGrid API token
+* `ERROR_NOTIFICATIONS_TO` - Comma-separated list of email addresses to send error reports to
+* `ERROR_NOTIFICATIONS_FROM` - Email address error reports should be sent from

@@ -49,3 +49,4 @@
 * copied in the rest of the text
   * mainly fine, need to deal with a few tweets that are coming out like '"', ';', ':'
 * next: email error report
+  * using SendGrid for this

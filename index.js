@@ -10,12 +10,60 @@ var Twit = require('twit');
 
 // tweet the queued tweet and then queue up the next one
 module.exports = function(ctx, cb) {
+  // send an email error report
+  var errorReport = function(err) {
+    console.log(err);
+    // wrap this in a Promise so it can always return a resolved Promise that
+    // carries the error argument, even if there is an error here
+    return new Promise(function(resolve, reject) {
+      // if the correct environment variables have not been set up, log and exit
+      if (!ctx.secrets.SENDGRID_API_KEY || !ctx.secrets.ERROR_NOTIFICATIONS_TO ||
+        !ctx.secrets.ERROR_NOTIFICATIONS_FROM) {
+        console.log('no error report sent, missing environment variables - ' +
+        'check SENDGRID_API_KEY, ERROR_NOTIFICATIONS_TO and ERROR_NOTIFICATIONS_FROM');
+        return Promise.resolve(err);
+      }
+      // split up the comma-separated list of to-emails
+      var toEmails = ctx.secrets.ERROR_NOTIFICATIONS_TO.split(',');
+      // send email through SendGrid
+      var helper = require('sendgrid').mail;
+      var fromEmail = new helper.Email(ctx.secrets.ERROR_NOTIFICATIONS_FROM);
+      var toEmail = new helper.Email(toEmails[0]);
+      var subject = 'Error report from CAPSELOCKE';
+      var content = new helper.Content('text/plain', 'Error:\n\n' + err);
+      var mail = new helper.Mail(fromEmail, subject, toEmail, content);
+      if (toEmails.length > 1) {
+        toEmails.slice(1).forEach(function(email) {
+          mail.personalizations[0].addTo(email);
+        });
+      }
+      var sg = require('sendgrid')(ctx.secrets.SENDGRID_API_KEY);
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
+      sg.API(request)
+      .then(function(response) {
+        console.log('email sent');
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+        return resolve(err);
+      })
+      .catch(function(emailError) {
+        console.log('error sending email notification', emailError);
+        return resolve(err);
+      });
+    });
+  };
 
   // response handler
   function callback(err, nextTweet) {
     // return success or failure
     if (err) {
-      return cb(err);
+      return errorReport(err)
+      .then(cb);
     } else {
       if (nextTweet) {
         return cb(null, 'DONE - next tweet: ' + JSON.stringify(nextTweet));
