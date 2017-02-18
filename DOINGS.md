@@ -47,4 +47,5 @@
   * finish all tweets at punctuation
   * make sure section and chapter headings start tweets
 * copied in the rest of the text
+  * mainly fine, need to deal with a few tweets that are coming out like '"', ';', ':'
 * next: email error report
