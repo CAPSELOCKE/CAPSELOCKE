@@ -22,7 +22,7 @@ try {
   var pathInfo = fs.statSync(sourceFilePath);
   if (pathInfo.isDirectory()) {
     var files = [];
-    fs.readdirSync(sourceFilePath).forEach(function(filename) {
+    fs.readdirSync(sourceFilePath).forEach(function(filename, i) {
       console.log('Reading from:', filename);
       var contents = fs.readFileSync(path.join(sourceFilePath, filename), 'utf-8');
       files.push(contents);
@@ -103,7 +103,13 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
   }
 
-  tweets.push(tweet);
+  // don't let two identical tweets be put next to each other
+  // or Twitter will reject the repeat tweet
+  if (tweets[tweets.length - 1] !== tweet) {
+    tweets.push(tweet);
+  } else {
+    console.log('duplicate tweet found, not saving:', tweet);
+  }
 
   // Prepare remaining text
   txt = txt.substr(tweet.length).trim();
