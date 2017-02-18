@@ -31,7 +31,8 @@ module.exports = function(ctx, cb) {
       var fromEmail = new helper.Email(ctx.secrets.ERROR_NOTIFICATIONS_FROM);
       var toEmail = new helper.Email(toEmails[0]);
       var subject = 'Error report from CAPSELOCKE';
-      var content = new helper.Content('text/plain', 'Error:\n\n' + err);
+      var body = 'Oops! CAPSELOCKE had a problem:\n\n' + err;
+      var content = new helper.Content('text/plain', body);
       var mail = new helper.Mail(fromEmail, subject, toEmail, content);
       if (toEmails.length > 1) {
         toEmails.slice(1).forEach(function(email) {
@@ -139,8 +140,10 @@ module.exports = function(ctx, cb) {
     })
     .catch(function(err) {
       // if request fails, error out
-      console.log('Error queueing next tweet', nextTweetURL);
-      return callback(err);
+      var errMessage = 'Error queueing next tweet: ' + nextTweetURL + ', ' +
+        err.message;
+      console.log(errMessage);
+      return callback(new Error(errMessage));
     });
   }
 
