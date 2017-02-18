@@ -43,3 +43,6 @@
 * running over an extract from the main body of text, including a header and some section symbols, found some issues
   * headings and sections can both start in the middle of tweets
 * found that Twitter will reject an update if it's the same as the previous one
+* csugden added pull requests to:
+  * finish all tweets at punctuation
+  * make sure section and chapter headings start tweets
