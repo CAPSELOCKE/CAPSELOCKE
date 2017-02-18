@@ -46,3 +46,5 @@
 * csugden added pull requests to:
   * finish all tweets at punctuation
   * make sure section and chapter headings start tweets
+* copied in the rest of the text
+* next: email error report
