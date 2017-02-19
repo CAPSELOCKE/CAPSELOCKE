@@ -77,9 +77,9 @@ while (txt.length > 0) {
   }
 
   // Trim back to last sentence end
-  var indexOfLastFullstop = tweet.lastIndexOf('.');
-  if (indexOfLastFullstop !== -1) {
-    var proposedNewTweet = tweet.substr(0, indexOfLastFullstop + 1);
+  var indexOfLastSentenceEnding = Math.max(tweet.lastIndexOf('.'), tweet.lastIndexOf('?'));
+  if (indexOfLastSentenceEnding !== -1) {
+    var proposedNewTweet = tweet.substr(0, indexOfLastSentenceEnding + 1);
 
     // Only trim back if it doesn't mean ending with a section heading
     if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
