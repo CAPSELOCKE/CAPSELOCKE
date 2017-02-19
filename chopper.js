@@ -55,7 +55,11 @@ var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
 var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
+var keepTrimming;
+
 while (txt.length > 0) {
+  keepTrimming = true;
+
   // Prepare next tweet
   tweet = txt.substr(0, 140);
 
@@ -80,26 +84,32 @@ while (txt.length > 0) {
     // Only trim back if it doesn't mean ending with a section heading
     if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
       tweet = proposedNewTweet;
+      keepTrimming = false;
     }
   }
 
-  // Trim back to last colon
-  if (tweet.lastIndexOf(':') !== -1) {
-    var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
+  if (keepTrimming) {
+    // Trim back to last colon
+    if (tweet.lastIndexOf(':') !== -1) {
+      var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
 
-    // Only trim back if it doesn't mean ending with a chapter heading
-    if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
-      tweet = proposedNewTweet;
+      // Only trim back if it doesn't mean ending with a chapter heading
+      if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
+        tweet = proposedNewTweet;
+        keepTrimming = false;
+      }
     }
   }
 
-  // Trim back to last semi-colon
-  if (tweet.lastIndexOf(';') !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
+  if (keepTrimming) {
+    // Trim back to last semi-colon
+    if (tweet.lastIndexOf(';') !== -1) {
+      tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
+      keepTrimming = false;
+    }
   }
 
-  // Trim back to last comma if tweet does not end in full-stop, colon or semi-colon.
-  if (['.',':',';'].indexOf(tweet.slice(-1)) === -1 && tweet.lastIndexOf(',') !== -1) {
+  if (keepTrimming && tweet.lastIndexOf(',') !== -1) {
     tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
   }
 
