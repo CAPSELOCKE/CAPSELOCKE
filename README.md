@@ -14,7 +14,8 @@ will be written to a file called `tweets.txt` in the same directory.
     
 Where:
 
-* `/path/to/file.txt` is the path to the file to chop up
+* `/path/to/file.txt` is the path to the file or folder of files to chop up
+  * if the path is to a folder, the files will come out in the order they are returned from the file system
 * `TWEET_URL_PREFIX` is the prefix to put on the front of the link to the next tweet. For CAPSELOCKE, this is `https://raw.githubusercontent.com/CAPSELOCKE/CAPSELOCKE/master/tweets`
 
 Each tweet will be saved as a JSON file containing the body of the tweet and a link to the next tweet:
@@ -42,9 +43,14 @@ Run using:
 
 This script is designed to be run on webtask.io as it uses local storage on that platform.
 
+Error reporting is handled by SendGrid if you set the relevant environment variables - see below.
+
 To send out the tweets, you need to set up secret credentials on Webtask, as follows:
 
 * `TWITTER_CONSUMER_KEY` - API key
 * `TWITTER_CONSUMER_SECRET` - API secret
 * `TWITTER_ACCESS_TOKEN_KEY` - Access token
 * `TWITTER_ACCESS_TOKEN_SECRET` - Access token secret
+* `SENDGRID_API_KEY` - SendGrid API token
+* `ERROR_NOTIFICATIONS_TO` - Comma-separated list of email addresses to send error reports to
+* `ERROR_NOTIFICATIONS_FROM` - Email address error reports should be sent from

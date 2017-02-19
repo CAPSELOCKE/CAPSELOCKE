@@ -10,7 +10,7 @@ var path = require('path');
 
 // get the source file from the arguments
 var sourceFilePath = process.argv[2];
-console.log('Source file:', sourceFilePath);
+console.log('Source file path:', sourceFilePath);
 
 // get the 'next tweet' URL prefix from the arguments
 var nextTweetPrefix = process.argv[3] || '';
@@ -18,9 +18,21 @@ console.log('Next tweet prefix:', nextTweetPrefix);
 
 // get the source text file
 try {
-  var txt = fs.readFileSync(sourceFilePath, 'utf-8');
+  var txt;
+  var pathInfo = fs.statSync(sourceFilePath);
+  if (pathInfo.isDirectory()) {
+    var files = [];
+    fs.readdirSync(sourceFilePath).forEach(function(filename, i) {
+      console.log('Reading from:', filename);
+      var contents = fs.readFileSync(path.join(sourceFilePath, filename), 'utf-8');
+      files.push(contents);
+    });
+    txt = files.join('\n');
+  } else {
+    txt = fs.readFileSync(sourceFilePath, 'utf-8');
+  }
 } catch (ex) {
-  console.log('failed to open source file');
+  console.log('error reading source file', ex);
   return 1;
 }
 
@@ -91,7 +103,13 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
   }
 
-  tweets.push(tweet);
+  // don't let two identical tweets be put next to each other
+  // or Twitter will reject the repeat tweet
+  if (tweets[tweets.length - 1] !== tweet) {
+    tweets.push(tweet);
+  } else {
+    console.log('duplicate tweet found, not saving:', tweet);
+  }
 
   // Prepare remaining text
   txt = txt.substr(tweet.length).trim();
