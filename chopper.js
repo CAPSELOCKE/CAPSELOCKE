@@ -55,7 +55,7 @@ var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
 var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
-var abbreviationsAtEndRegExp = /(VIZ\.)|(\&C\.)|(I\. E\.)|(V\. G\.)$/
+var abbreviationsAtEndRegExp = /(VIZ\.)$|(\&C\.)$|(I\. E\.)$|(V\. G\.)$/
 
 var keepTrimming;
 
@@ -78,10 +78,15 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.search(chapterRegExp));
   }
 
-  // Trim back to last sentence end
-  var indexOfLastSentenceEnding = Math.max(tweet.lastIndexOf('.'), tweet.lastIndexOf('?'));
-  if (indexOfLastSentenceEnding !== -1) {
-    var proposedNewTweet = tweet.substr(0, indexOfLastSentenceEnding + 1);
+  // Don't break up quotes.
+  if (tweet.lastIndexOf('“') > tweet.lastIndexOf('”') && tweet.lastIndexOf('“') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('“'));
+  }
+
+  // Trim back to last major ending (. ? ”)
+  var indexOfLastMajorEnding = Math.max(tweet.lastIndexOf('.'), tweet.lastIndexOf('?'), tweet.lastIndexOf('”'));
+  if (indexOfLastMajorEnding !== -1) {
+    var proposedNewTweet = tweet.substr(0, indexOfLastMajorEnding + 1);
 
     // Only trim back if it doesn't mean ending with a section heading
     if (proposedNewTweet.search(sectionAtEndRegExp) === -1
