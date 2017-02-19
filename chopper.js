@@ -56,6 +56,7 @@ var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
 var abbreviationsAtEndRegExp = /(VIZ\.)$|(\&C\.)$|(I\. E\.)$|(V\. G\.)$/
+var unfinishedBitPattern = /(\([^\)]+$)|\[[^\]]+$/;
 
 var keepTrimming;
 
@@ -83,14 +84,23 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.lastIndexOf('“'));
   }
 
+  // Don't break up parenthetical sections.
+  if (tweet.lastIndexOf('(') > tweet.lastIndexOf(')') && tweet.lastIndexOf('(') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('('));
+  }
+  if (tweet.lastIndexOf('[') > tweet.lastIndexOf(']') && tweet.lastIndexOf('[') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('['));
+  }
+
   // Trim back to last major ending (. ? ”)
   var indexOfLastMajorEnding = Math.max(tweet.lastIndexOf('.'), tweet.lastIndexOf('?'), tweet.lastIndexOf('”'));
   if (indexOfLastMajorEnding !== -1) {
     var proposedNewTweet = tweet.substr(0, indexOfLastMajorEnding + 1);
 
-    // Only trim back if it doesn't mean ending with a section heading
+    // Only trim back if it doesn't mean a bad ending
     if (proposedNewTweet.search(sectionAtEndRegExp) === -1
         && proposedNewTweet.search(abbreviationsAtEndRegExp) === -1
+        && proposedNewTweet.search(unfinishedBitPattern) === -1
         ) {
       tweet = proposedNewTweet;
       keepTrimming = false;
@@ -102,8 +112,10 @@ while (txt.length > 0) {
     if (tweet.lastIndexOf(':') !== -1) {
       var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
 
-      // Only trim back if it doesn't mean ending with a chapter heading
-      if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
+      // Only trim back if it doesn't mean a bad ending
+      if (proposedNewTweet.search(chapterAtEndRegExp) === -1
+          && proposedNewTweet.search(unfinishedBitPattern) === -1
+        ) {
         tweet = proposedNewTweet;
         keepTrimming = false;
       }
