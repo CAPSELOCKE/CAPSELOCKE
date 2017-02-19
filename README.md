@@ -10,11 +10,11 @@ Running the following will chop up a body of text into 140 character chunks. Par
 The tweets will be saved into a folder called `tweets` in the same directory as the script. A list of the tweets
 will be written to a file called `tweets.txt` in the same directory.
 
-    node chopper.js /path/to/file.txt [TWEET_URL_PREFIX]
+    node chopper.js /path/to/tweets [TWEET_URL_PREFIX]
     
 Where:
 
-* `/path/to/file.txt` is the path to the file or folder of files to chop up
+* `/path/to/tweets` is the path to the file or folder of files to chop up
   * if the path is to a folder, the files will come out in the order they are returned from the file system
 * `TWEET_URL_PREFIX` is the prefix to put on the front of the link to the next tweet. For CAPSELOCKE, this is `https://raw.githubusercontent.com/CAPSELOCKE/CAPSELOCKE/master/tweets`
 
