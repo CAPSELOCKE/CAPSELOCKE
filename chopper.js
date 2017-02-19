@@ -55,7 +55,14 @@ var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
 var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
+var abbreviationsAtEndRegExp = /(VIZ\.)$|(\&C\.)$|(I\. E\.)$|(V\. G\.)$/
+var unfinishedBitPattern = /(\([^\)]+$)|\[[^\]]+$/;
+
+var keepTrimming;
+
 while (txt.length > 0) {
+  keepTrimming = true;
+
   // Prepare next tweet
   tweet = txt.substr(0, 140);
 
@@ -72,34 +79,58 @@ while (txt.length > 0) {
     tweet = tweet.substr(0, tweet.search(chapterRegExp));
   }
 
-  // Trim back to last sentence end
-  var indexOfLastFullstop = tweet.lastIndexOf('.');
-  if (indexOfLastFullstop !== -1) {
-    var proposedNewTweet = tweet.substr(0, indexOfLastFullstop + 1);
+  // Don't break up quotes.
+  if (tweet.lastIndexOf('“') > tweet.lastIndexOf('”') && tweet.lastIndexOf('“') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('“'));
+  }
 
-    // Only trim back if it doesn't mean ending with a section heading
-    if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
+  // Don't break up parenthetical sections.
+  if (tweet.lastIndexOf('(') > tweet.lastIndexOf(')') && tweet.lastIndexOf('(') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('('));
+  }
+  if (tweet.lastIndexOf('[') > tweet.lastIndexOf(']') && tweet.lastIndexOf('[') > 0) {
+    tweet = tweet.substr(0, tweet.lastIndexOf('['));
+  }
+
+  // Trim back to last major ending (. ? ”)
+  var indexOfLastMajorEnding = Math.max(tweet.lastIndexOf('.'), tweet.lastIndexOf('?'), tweet.lastIndexOf('”'));
+  if (indexOfLastMajorEnding !== -1) {
+    var proposedNewTweet = tweet.substr(0, indexOfLastMajorEnding + 1);
+
+    // Only trim back if it doesn't mean a bad ending
+    if (proposedNewTweet.search(sectionAtEndRegExp) === -1
+        && proposedNewTweet.search(abbreviationsAtEndRegExp) === -1
+        && proposedNewTweet.search(unfinishedBitPattern) === -1
+        ) {
       tweet = proposedNewTweet;
+      keepTrimming = false;
     }
   }
 
-  // Trim back to last colon
-  if (tweet.lastIndexOf(':') !== -1) {
-    var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
+  if (keepTrimming) {
+    // Trim back to last colon
+    if (tweet.lastIndexOf(':') !== -1) {
+      var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
 
-    // Only trim back if it doesn't mean ending with a chapter heading
-    if (proposedNewTweet.search(chapterAtEndRegExp) === -1) {
-      tweet = proposedNewTweet;
+      // Only trim back if it doesn't mean a bad ending
+      if (proposedNewTweet.search(chapterAtEndRegExp) === -1
+          && proposedNewTweet.search(unfinishedBitPattern) === -1
+        ) {
+        tweet = proposedNewTweet;
+        keepTrimming = false;
+      }
     }
   }
 
-  // Trim back to last semi-colon
-  if (tweet.lastIndexOf(';') !== -1) {
-    tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
+  if (keepTrimming) {
+    // Trim back to last semi-colon
+    if (tweet.lastIndexOf(';') !== -1) {
+      tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
+      keepTrimming = false;
+    }
   }
 
-  // Trim back to last comma if tweet does not end in full-stop, colon or semi-colon.
-  if (['.',':',';'].indexOf(tweet.slice(-1)) === -1 && tweet.lastIndexOf(',') !== -1) {
+  if (keepTrimming && tweet.lastIndexOf(',') !== -1) {
     tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
   }
 
