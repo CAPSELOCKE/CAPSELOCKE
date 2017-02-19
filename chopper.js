@@ -55,6 +55,8 @@ var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
 var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
+var abbreviationsAtEndRegExp = /(VIZ\.)|(\&C\.)|(I\. E\.)|(V\. G\.)$/
+
 var keepTrimming;
 
 while (txt.length > 0) {
@@ -82,7 +84,9 @@ while (txt.length > 0) {
     var proposedNewTweet = tweet.substr(0, indexOfLastSentenceEnding + 1);
 
     // Only trim back if it doesn't mean ending with a section heading
-    if (proposedNewTweet.search(sectionAtEndRegExp) === -1) {
+    if (proposedNewTweet.search(sectionAtEndRegExp) === -1
+        && proposedNewTweet.search(abbreviationsAtEndRegExp) === -1
+        ) {
       tweet = proposedNewTweet;
       keepTrimming = false;
     }
