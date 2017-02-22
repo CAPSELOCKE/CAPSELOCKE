@@ -72,11 +72,13 @@ while (txt.length > 0) {
   // End tweet before any new section
   if (tweet.search(sectionRegExp) > 0) {
     tweet = tweet.substr(0, tweet.search(sectionRegExp));
+    keepTrimming = false;
   }
 
   // End tweet before any new chapter
   if (tweet.search(chapterRegExp) > 0) {
     tweet = tweet.substr(0, tweet.search(chapterRegExp));
+    keepTrimming = false;
   }
 
   // Don't break up quotes.
