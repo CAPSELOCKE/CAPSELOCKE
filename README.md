@@ -29,7 +29,7 @@ Each tweet will be saved as a JSON file containing the body of the tweet and a l
 
 Run using:
 
-  node init.js /path/to/tweet
+    node init.js [/path/to/tweet]
 
 The script expects a seed tweet at `./tweets/0.json` or at the path provided by the `/path/to/tweet` argument.
 
