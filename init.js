@@ -7,6 +7,8 @@ var fs = require('fs');
 var path = require('path');
 var request = require('request-promise');
 
+var tweetPath = process.argv[2] || path.join(__dirname, 'tweets', '0.json');
+
 var WEBTASK_API_TOKEN = process.env.WEBTASK_API_TOKEN;
 var WEBTASK_USERNAME = process.env.WEBTASK_USERNAME;
 var WEBTASK_NAME = process.env.WEBTASK_NAME;
@@ -15,7 +17,7 @@ var urlStem = 'https://webtask.it.auth0.com/api/webtask/' + WEBTASK_USERNAME +
 var url = urlStem + '?key=' + WEBTASK_API_TOKEN;
 
 // get the first tweet
-var tweet = fs.readFileSync(path.join(__dirname, 'tweets', '0.json'), 'utf-8');
+var tweet = fs.readFileSync(tweetPath, 'utf-8');
 
 // seed the storage
 request.put({

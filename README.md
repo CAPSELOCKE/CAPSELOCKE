@@ -27,17 +27,17 @@ Each tweet will be saved as a JSON file containing the body of the tweet and a l
 
 2. `init.js` - seed the Webtask storage with the first tweet
 
-The script expects a seed tweet at `./tweets/0.json`.
+Run using:
+
+  node init.js /path/to/tweet
+
+The script expects a seed tweet at `./tweets/0.json` or at the path provided by the `/path/to/tweet` argument.
 
 The script requires some environment variables to be set:
 
 * `WEBTASK_API_TOKEN` - valid Webtask authentication
 * `WEBTASK_USERNAME` - the slug of your Webtask account e.g. `wt-your-email-0`
 * `WEBTASK_NAME` - the name of the webtask you are setting storage for
-
-Run using:
-
-  node init.js
 
 3. `index.js` - tweet from a queue and line up the next tweet
 
