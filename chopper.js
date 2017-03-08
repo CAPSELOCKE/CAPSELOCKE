@@ -55,7 +55,7 @@ var sectionPattern = '§ ([0-9]+)\.'; //e.g. "§ 25."
 var sectionRegExp = new RegExp(sectionPattern);
 var sectionAtEndRegExp = new RegExp(sectionPattern + '$');
 
-var abbreviationsAtEndRegExp = /(VIZ\.)$|(\&C\.)$|(I\. E\.)$|(V\. G\.)$/
+var abbreviationsAtEndRegExp = /(VIZ\.)$|(\&C\.)$|(I\. E\.)$|(V\. G\.)$/;
 var unfinishedBitPattern = /(\([^\)]+$)|\[[^\]]+$/;
 
 var keepTrimming;
@@ -100,10 +100,10 @@ while (txt.length > 0) {
     var proposedNewTweet = tweet.substr(0, indexOfLastMajorEnding + 1);
 
     // Only trim back if it doesn't mean a bad ending
-    if (proposedNewTweet.search(sectionAtEndRegExp) === -1
-        && proposedNewTweet.search(abbreviationsAtEndRegExp) === -1
-        && proposedNewTweet.search(unfinishedBitPattern) === -1
-        ) {
+    if (proposedNewTweet.search(sectionAtEndRegExp) === -1 &&
+      proposedNewTweet.search(abbreviationsAtEndRegExp) === -1 &&
+      proposedNewTweet.search(unfinishedBitPattern) === -1
+    ) {
       tweet = proposedNewTweet;
       keepTrimming = false;
     }
@@ -115,25 +115,31 @@ while (txt.length > 0) {
       var proposedNewTweet = tweet.substr(0, tweet.lastIndexOf(':') + 1);
 
       // Only trim back if it doesn't mean a bad ending
-      if (proposedNewTweet.search(chapterAtEndRegExp) === -1
-          && proposedNewTweet.search(unfinishedBitPattern) === -1
-        ) {
+      if (proposedNewTweet.search(chapterAtEndRegExp) === -1 &&
+        proposedNewTweet.search(unfinishedBitPattern) === -1
+      ) {
         tweet = proposedNewTweet;
         keepTrimming = false;
       }
     }
   }
-
-  if (keepTrimming) {
-    // Trim back to last semi-colon
-    if (tweet.lastIndexOf(';') !== -1) {
-      tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
-      keepTrimming = false;
-    }
+  
+  // trim back to last semi-colon
+  if (keepTrimming && tweet.lastIndexOf(';') !== -1) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(';') + 1);
+    keepTrimming = false;
   }
 
+  // trim back to last comma
   if (keepTrimming && tweet.lastIndexOf(',') !== -1) {
     tweet = tweet.substr(0, tweet.lastIndexOf(',') + 1);
+    keepTrimming = false;
+  }
+  
+  // trim back to a word boundary if necessary
+  if (keepTrimming) {
+    tweet = tweet.substr(0, tweet.lastIndexOf(' ') + 1);
+    keepTrimming = false;
   }
 
   // don't let two identical tweets be put next to each other

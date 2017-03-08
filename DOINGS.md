@@ -50,3 +50,4 @@
   * mainly fine, need to deal with a few tweets that are coming out like '"', ';', ':'
 * next: email error report
   * using SendGrid for this
+* realised that some tweets started with "d " and were being interpreted as direct messages. Added fix to stop tweet at word boundaries to avoid splitting words
