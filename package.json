@@ -1,6 +1,6 @@
 {
   "name": "capselocke",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Tweeting John Capse Locke 140 characters at a time @CAPSELOCKE",
   "main": "index.js",
   "scripts": {

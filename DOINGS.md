@@ -52,3 +52,4 @@
   * using SendGrid for this
 * realised that some tweets started with "d " and were being interpreted as direct messages. Added fix to stop tweet at word boundaries to avoid splitting words
 * had a problem where two tweets fifty lines apart both said "FOR EXAMPLE:" and Twitter rejected the second as a duplicate, even when I retried it seven hours later. I put a space at the end and it went through fine. Not ideal. Thinking about whether to search for these at the start or deal with them dynamically by retrying with a space on the end (which would be fine unless the tweet is already 140 characters, in which case you could delete the last character...)
+* time to go live!
